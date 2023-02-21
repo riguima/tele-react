@@ -14,8 +14,7 @@ emoji_repository = EmojiRepository()
 
 @Client.on_message(filters.command('start') & filters.user(username))
 async def start(client: Client, message: Message) -> None:
-    text = (f'Comandos\n\n'
-            '/adicionar_emoji 🔥 - Adiciona o emoji 🔥 na lista\n'
+    text = ('/adicionar_emoji 🔥 - Adiciona o emoji 🔥 na lista\n'
             '/remover_emoji 🔥 - Remove o emoji 🔥 da lista\n'
             '/emojis - Mostra a lista dos emojis adicionados')
     await client.send_message(message.chat.id, text)
