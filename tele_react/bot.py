@@ -14,7 +14,7 @@ client = Client(
 
 @client.on_message(filters.command('start') & filters.user(os.getenv('USERNAME')))
 async def start(client: Client, message: Message) -> None:
-    text = (f'{"Comandos": ^50}\n'
+    text = (f'Comandos\n\n'
             '/adicionar_emoji - Adiciona um emoji\n'
             '/remover_emoji - Remove um emoji\n'
             '/emojis - Mostra a lista dos emojis adicionados')
