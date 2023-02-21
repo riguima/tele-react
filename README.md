@@ -12,10 +12,10 @@ Crie um arquivo chamado `.env` no diretório raiz e defina as seguintes variáve
 
 - `SQLALCHEMY_DATABASE_URI` = A url do banco de dados, por exemplo "postgresql://username:password@localhost:5432/my_database"
 - `USERNAME` = Nome do seu usuário, a aplicação vai usar sua conta para fazer as reações, porque bots do Telegram não podem fazer reações
-- `BOT\_NAME` = Nome do bot que será usado para se comunicar com o usuário definido em USERNAME
-- `API\_ID`
-- `API\_HASH`
-- `BOT\_TOKEN`
+- `BOT_NAME` = Nome do bot que será usado para se comunicar com o usuário definido em USERNAME
+- `API_ID`
+- `API_HASH`
+- `BOT_TOKEN`
 
 ## Uso
 
