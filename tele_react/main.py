@@ -1,16 +1,32 @@
-from importlib import import_module
-from pyrogram import idle
+from pyrogram import idle, Client
 import asyncio
+import os
+from dotenv import load_dotenv
+
 
 async def main():
-    modules = [import_module('bot'), import_module('client')]
-    for module in modules:
-        await module.client.start()
+    load_dotenv()
+    apps = [
+        Client(
+            os.getenv('USERNAME'),
+            api_id=os.getenv('API_ID'),
+            api_hash=os.getenv('API_HASH'),
+            plugins=dict(root='client_plugins', include=['handlers'])),
+        Client(
+            os.getenv('BOT_NAME'),
+            api_id=os.getenv('API_ID'),
+            api_hash=os.getenv('API_HASH'),
+            bot_token=os.getenv('BOT_TOKEN'),
+            plugins=dict(root='bot_plugins', include=['handlers'])),
+    ]
+    for app in apps:
+        await app.start()
 
     await idle()
 
-    for module in modules:
-        await module.client.stop()
+    for app in apps:
+        await app.stop()
+
 
 if __name__ == '__main__':
     asyncio.run(main())
