@@ -10,4 +10,4 @@ class EmojiModel(Base):
 
 class ChatModel(Base):
     __tablename__ = 'chats'
-    name = Column(String, primary_key=True, nullable=False)
+    chat = Column(String, primary_key=True, nullable=False)

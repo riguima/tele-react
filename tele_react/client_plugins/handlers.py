@@ -1,12 +1,12 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from random import choice
-from repositories import EmojiRepository
+from repositories import EmojiRepository, ChatRepository
 
 emoji_repository = EmojiRepository()
-group_repository = GroupRepository()
+chat_repository = ChatRepository()
 
-@Client.on_message(filters.chat(group_repository.all()))
+@Client.on_message()
 async def react(client: Client, message: Message) -> None:
-    if emoji_repository.all():
+    if emoji_repository.all() and message.chat.title in chat_repository.all():
         await client.send_reaction(message.chat.id, message.id, choice(emoji_repository.all()))

@@ -26,7 +26,7 @@ class ChatRepository(IChatRepository):
     
     def all(self) -> list[str]:
         with Session() as session:
-            return [m.name for m in session.query(ChatModel).all()]
+            return [m.chat for m in session.query(ChatModel).all()]
 
     def add(self, chat: str) -> None:
         with Session() as session:
