@@ -18,9 +18,10 @@ chat_repository = ChatRepository()
 async def start(client: Client, message: Message) -> None:
     text = ('/adicionar_emoji 🔥 - Adiciona o emoji 🔥 na lista\n'
             '/remover_emoji 🔥 - Remove o emoji 🔥 da lista\n'
-            '/emojis - Mostra a lista dos emojis adicionados\n'
+            '/emojis - Mostra a lista dos emojis adicionados\n\n'
             '/adicionar_chat nome - Adiciona chat para fazer reações\n'
-            '/remover_chat nome - Remove um chat')
+            '/remover_chat nome - Remove um chat\n'
+            '/chats - Mostra a lista dos chats adicionados')
     await client.send_message(message.chat.id, text)
 
 
