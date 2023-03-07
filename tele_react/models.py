@@ -6,3 +6,8 @@ Base = declarative_base()
 class EmojiModel(Base):
     __tablename__ = 'emojis'
     emoji = Column(String, primary_key=True, nullable=False)
+
+
+class ChatModel(Base):
+    __tablename__ = 'chats'
+    name = Column(String, primary_key=True, nullable=False)

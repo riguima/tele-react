@@ -16,7 +16,9 @@ emoji_repository = EmojiRepository()
 async def start(client: Client, message: Message) -> None:
     text = ('/adicionar_emoji 🔥 - Adiciona o emoji 🔥 na lista\n'
             '/remover_emoji 🔥 - Remove o emoji 🔥 da lista\n'
-            '/emojis - Mostra a lista dos emojis adicionados')
+            '/emojis - Mostra a lista dos emojis adicionados',
+            '/adicionar_chat nome - Adiciona chat para fazer reações',
+            '/remover_chat nome - Remove um chat')
     await client.send_message(message.chat.id, text)
 
 
@@ -29,8 +31,7 @@ async def add_emoji(client: Client, message: Message) -> None:
 
 @Client.on_message(filters.command('remover_emoji') & filters.user(username))
 async def remove_emoji(client: Client, message: Message) -> None:
-    emoji = emoji_repository.get(message.text.split()[-1])
-    if emoji:
+    if emoji in emoji_repository.all():
         emoji_repository.delete(emoji)
         await client.send_message(message.chat.id, f'Emoji {emoji} removido!')
     else:
@@ -40,6 +41,13 @@ async def remove_emoji(client: Client, message: Message) -> None:
 @Client.on_message(filters.command('emojis') & filters.user(username))
 async def emojis(client: Client, message: Message) -> None:
     await client.send_message(message.chat.id, get_emojis())
+
+
+@Client.on_message(filters.command('adicionar_chat') & filters.user(username))
+async def add_chat(client: Client, message: Message) -> None:
+    chat = message.text.split()[-1]
+    chat_repository.add(chat)
+    await client.send_message(message.chat.id, f'Chat "{chat}" adicionado!')
 
 
 def get_emojis() -> str:
