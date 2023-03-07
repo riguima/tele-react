@@ -1,6 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from dotenv import load_dotenv
+from domain import IRepository
 from repositories import EmojiRepository, ChatRepository
 import os
 
@@ -32,6 +33,7 @@ async def add_emoji(client: Client, message: Message) -> None:
 
 @Client.on_message(filters.command('remover_emoji') & filters.user(username))
 async def remove_emoji(client: Client, message: Message) -> None:
+    emoji = message.text.split()[-1]
     if emoji in emoji_repository.all():
         emoji_repository.delete(emoji)
         await client.send_message(message.chat.id, f'Emoji {emoji} removido!')
@@ -41,7 +43,7 @@ async def remove_emoji(client: Client, message: Message) -> None:
 
 @Client.on_message(filters.command('emojis') & filters.user(username))
 async def emojis(client: Client, message: Message) -> None:
-    await client.send_message(message.chat.id, get_emojis())
+    await client.send_message(message.chat.id, get_list(emoji_repository))
 
 
 @Client.on_message(filters.command('adicionar_chat') & filters.user(username))
@@ -51,8 +53,9 @@ async def add_chat(client: Client, message: Message) -> None:
     await client.send_message(message.chat.id, f'Chat "{chat}" adicionado!')
 
 
-@Client.on_message(filters.command('adicionar_emoji') & filters.user(username))
-async def remove_emoji(client: Client, message: Message) -> None:
+@Client.on_message(filters.command('remover_chat') & filters.user(username))
+async def remove_chat(client: Client, message: Message) -> None:
+    chat = message.text.split()[-1]
     if chat in chat_repository.all():
         chat_repository.delete(chat)
         await client.send_message(message.chat.id, f'Chat {chat} removido!')
@@ -60,8 +63,13 @@ async def remove_emoji(client: Client, message: Message) -> None:
         await client.send_message(message.chat.id, 'Chat não encontrado')
 
 
-def get_emojis() -> str:
+@Client.on_message(filters.command('chats') & filters.user(username))
+async def chats(client: Client, message: Message) -> None:
+    await client.send_message(message.chat.id, get_list(chat_repository))
+
+
+def get_list(repository: IRepository) -> str:
     result = ''
-    for enum, emoji in enumerate(emoji_repository.all()):
-        result += f'{enum + 1} - {emoji}\n'
+    for enum, key in enumerate(repository.all()):
+        result += f'{enum + 1} - {key}\n'
     return result

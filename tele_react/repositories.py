@@ -1,41 +1,41 @@
-from domain import IEmojiRepository, IChatRepository
+from domain import IRepository
 from database import Session
 from models import EmojiModel, ChatModel
 
 
-class EmojiRepository(IEmojiRepository):
+class EmojiRepository(IRepository):
     
     def all(self) -> list[str]:
         with Session() as session:
             return [m.emoji for m in session.query(EmojiModel).all()]
 
-    def delete(self, emoji: str) -> None:
+    def delete(self, key: str) -> None:
         with Session() as session:
-            model = session.query(EmojiModel).get(emoji)
+            model = session.query(EmojiModel).get(key)
             if model:
                 session.delete(model)
                 session.commit()
 
-    def add(self, emoji: str) -> None:
+    def add(self, key: str) -> None:
         with Session() as session:
-            session.add(EmojiModel(emoji=emoji))
+            session.add(EmojiModel(emoji=key))
             session.commit()
 
 
-class ChatRepository(IChatRepository):
+class ChatRepository(IRepository):
     
     def all(self) -> list[str]:
         with Session() as session:
             return [m.chat for m in session.query(ChatModel).all()]
 
-    def add(self, chat: str) -> None:
+    def add(self, key: str) -> None:
         with Session() as session:
-            session.add(ChatModel(chat=chat))
+            session.add(ChatModel(chat=key))
             session.commit()
 
-    def delete(self, chat: str) -> None:
+    def delete(self, key: str) -> None:
         with Session() as session:
-            model = session.query(ChatModel).get(chat)
+            model = session.query(ChatModel).get(key)
             if model:
                 session.delete(model)
                 session.commit()
