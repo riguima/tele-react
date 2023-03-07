@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from dotenv import load_dotenv
-from repositories import EmojiRepository
+from repositories import EmojiRepository, ChatRepository
 import os
 
 
@@ -10,6 +10,7 @@ load_dotenv()
 
 username = os.getenv('USERNAME')
 emoji_repository = EmojiRepository()
+chat_repository = ChatRepository()
 
 
 @Client.on_message(filters.command('start') & filters.user(username))
@@ -48,6 +49,15 @@ async def add_chat(client: Client, message: Message) -> None:
     chat = message.text.split()[-1]
     chat_repository.add(chat)
     await client.send_message(message.chat.id, f'Chat "{chat}" adicionado!')
+
+
+@Client.on_message(filters.command('adicionar_emoji') & filters.user(username))
+async def remove_emoji(client: Client, message: Message) -> None:
+    if chat in chat_repository.all():
+        chat_repository.delete(chat)
+        await client.send_message(message.chat.id, f'Chat {chat} removido!')
+    else:
+        await client.send_message(message.chat.id, 'Chat não encontrado')
 
 
 def get_emojis() -> str:
