@@ -49,14 +49,14 @@ async def emojis(client: Client, message: Message) -> None:
 
 @Client.on_message(filters.command('adicionar_chat') & filters.user(username))
 async def add_chat(client: Client, message: Message) -> None:
-    chat = message.text.split()[-1]
+    chat = ''.join(message.text.split()[1:])
     chat_repository.add(chat)
     await client.send_message(message.chat.id, f'Chat "{chat}" adicionado!')
 
 
 @Client.on_message(filters.command('remover_chat') & filters.user(username))
 async def remove_chat(client: Client, message: Message) -> None:
-    chat = message.text.split()[-1]
+    chat = ''.join(message.text.split()[1:])
     if chat in chat_repository.all():
         chat_repository.delete(chat)
         await client.send_message(message.chat.id, f'Chat {chat} removido!')
